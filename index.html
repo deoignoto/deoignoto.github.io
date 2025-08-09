@@ -3,28 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Game Releases</title>
+    <title>Karabyte Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <header>
-      <h1>Game Releases</h1>
-      <p>Welcome to the official hub for my indie games.</p>
+  <body id="home">
+    <header class="top-header">
+      <h1 class="logo">Karabyte Studio</h1>
+      <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#games">Games</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </header>
-    <main>
-      <section class="game-list">
-        <article class="game">
-          <h2><a href="games/space-adventure.html">Space Adventure</a></h2>
-          <p>Embark on a cosmic journey. Released: January 2023.</p>
-        </article>
-        <article class="game">
-          <h2><a href="games/quest-for-gold.html">Quest for Gold</a></h2>
-          <p>Seek treasure in a pixelated world. Released: August 2022.</p>
-        </article>
-      </section>
-    </main>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Upcoming: Cyber Quest</h2>
+        <p>Prepare for the next generation cyber adventure</p>
+      </div>
+    </section>
+
+    <section id="games" class="games-section">
+      <h2>Games</h2>
+      <div class="games-grid">
+        <a class="game-card" href="games/space-adventure.html">
+          <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=60" alt="Space Adventure" />
+          <h3>Space Adventure</h3>
+          <p>Embark on a cosmic journey across uncharted galaxies.</p>
+        </a>
+        <a class="game-card" href="games/quest-for-gold.html">
+          <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367b?auto=format&fit=crop&w=800&q=60" alt="Quest for Gold" />
+          <h3>Quest for Gold</h3>
+          <p>Seek legendary treasures in mysterious lands.</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="content-section">
+      <h2>About</h2>
+      <p>Karabyte Studio is a solo indie developer crafting immersive experiences with a futuristic flair.</p>
+    </section>
+
+    <section id="contact" class="content-section">
+      <h2>Contact</h2>
+      <p>Reach out via <a class="btn" href="mailto:karabyte@example.com">karabyte@example.com</a></p>
+    </section>
+
     <footer>
-      <p>&copy; 2024 My Game Studio</p>
+      <p>&copy; 2024 Karabyte Studio</p>
     </footer>
   </body>
 </html>
