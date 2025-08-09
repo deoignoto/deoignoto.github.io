@@ -1,59 +1,384 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Karabyte Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body id="home">
-    <header class="top-header">
-      <h1 class="logo">Karabyte Studio</h1>
-      <nav class="navbar">
-        <a href="#home">Home</a>
-        <a href="#games">Games</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Karabyte Studio — Indie Game Developer</title>
+  <meta name="description" content="Karabyte Studio is a solo indie game studio. Explore our games like Snakelike, read the privacy policy, and get in touch." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop stop-color='%237cf4ff'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect rx='12' width='64' height='64' fill='%23131821'/%3E%3Cpath d='M14 38c8 10 28 10 36-6-8 4-14-4-20-4-6 0-8 6-16 10z' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <style>
+    :root{--bg:#0c0f14;--panel:#131821;--text:#e8eef7;--muted:#a9b6c9;--accent:#7cf4ff;--accent2:#a78bfa;--ok:#4ade80;--warn:#fbbf24;--danger:#ef4444;--radius:18px;--glow:0 0 8px rgba(124,244,255,0.8)}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;line-height:1.65}
+    a{color:var(--accent);transition:color .2s ease, text-shadow .2s ease}
+    a:hover{text-decoration:none;text-shadow:var(--glow);color:var(--accent)}
+    .container{max-width:1120px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,rgba(124,244,255,.08),rgba(124,244,255,0) 80%);backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800}
+    .logo{width:38px;height:38px;border-radius:12px;background:radial-gradient(120% 120% at 20% 20%,var(--accent),var(--accent2));box-shadow:0 0 28px rgba(124,244,255,.35)}
+    nav a{margin-left:16px;opacity:.9}
+    .nav-desktop{display:block}
+    .menu-btn{display:none;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text)}
+
+    /* Mobile menu (off‑canvas) */
+    .mobile-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:49}
+    .mobile-backdrop.open{opacity:1;pointer-events:auto}
+    .mobile-panel{position:fixed;top:0;right:0;height:100dvh;width:min(80vw,320px);background:var(--panel);border-left:1px solid rgba(255,255,255,.08);box-shadow:-12px 0 40px rgba(0,0,0,.5);transform:translateX(100%);transition:transform .2s ease;z-index:50;display:flex;flex-direction:column}
+    .mobile-panel.open{transform:translateX(0)}
+    .mobile-panel header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08);background:transparent;position:static}
+    .mobile-nav a{display:block;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06)}
+    .close-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text)}
+
+    .row{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+    .hero{padding:56px 0}
+    .hero h1{font-size:clamp(28px,4vw,44px);line-height:1.15;margin:0 0 10px}
+    .hero p{color:var(--muted);max-width:760px}
+    .cta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));color:var(--text);text-decoration:none;transition:text-shadow .2s ease}
+    .btn:hover{text-shadow:var(--glow)}
+    .btn.primary{border-color:rgba(124,244,255,.5);background:linear-gradient(180deg,rgba(124,244,255,.16),rgba(124,244,255,.04))}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+    .card h3{margin:8px 0 6px}
+    .pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted)}
+    .game-thumb{aspect-ratio:16/9;width:100%;border-radius:14px;background:linear-gradient(135deg,rgba(124,244,255,.15),rgba(167,139,250,.15));border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#b6c3d8}
+    section{display:none}
+    section.active{display:block}
+    footer{margin:44px 0 24px;color:var(--muted);font-size:14px}
+    .toc a{display:inline-block;margin:6px 14px 0 0;font-size:14px}
+    .kv{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .kv div{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);padding:8px 10px;border-radius:10px;color:var(--muted);font-size:13px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(124,244,255,.12);border:1px solid rgba(124,244,255,.35);font-size:12px;color:var(--text)}
+
+    @media (max-width:600px){
+      .nav-desktop{display:none}
+      .menu-btn{display:inline-flex}
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"Karabyte Studio",
+    "url":"https://your-domain.example/",
+    "logo":"https://your-domain.example/logo.png",
+    "sameAs":["https://twitter.com/karabyte","https://youtube.com/@karabyte"],
+    "description":"Solo indie game studio creating stylish 2D games."
+  }
+  </script>
+</head>
+<body>
+  <!-- Header / Nav -->
+  <header>
+    <div class="container row" style="justify-content:space-between">
+      <div class="brand"><span class="logo" aria-hidden="true"></span><span>Karabyte Studio</span></div>
+      <nav class="nav-desktop" aria-label="Primary">
+        <a href="#/home">Home</a>
+        <a href="#/games">Games</a>
+        <a href="#/privacy">Privacy Policy</a>
+        <a href="#/about">About</a>
+        <a href="#/contact">Contact</a>
       </nav>
+      <button class="menu-btn" id="menuBtn" aria-controls="mobileNav" aria-expanded="false" aria-label="Open menu">☰ Menu</button>
+    </div>
+  </header>
+
+  <!-- Mobile off‑canvas menu + backdrop -->
+  <div class="mobile-backdrop" id="mobileBackdrop" hidden></div>
+  <aside class="mobile-panel" id="mobileNav" role="dialog" aria-modal="true" aria-label="Mobile navigation" hidden>
+    <header>
+      <strong>Menu</strong>
+      <button class="close-btn" id="menuClose" aria-label="Close menu">✕</button>
     </header>
+    <nav class="mobile-nav" aria-label="Mobile Primary">
+      <a href="#/home" data-nav>Home</a>
+      <a href="#/games" data-nav>Games</a>
+      <a href="#/privacy" data-nav>Privacy Policy</a>
+      <a href="#/about" data-nav>About</a>
+      <a href="#/contact" data-nav>Contact</a>
+    </nav>
+  </aside>
 
-    <section class="hero">
-      <div class="hero-content">
-        <h2>Upcoming: Cyber Quest</h2>
-        <p>Prepare for the next generation cyber adventure</p>
+  <!-- Home -->
+  <section id="home" class="active">
+    <div class="container hero">
+      <div class="row">
+        <div style="flex:1 1 520px;min-width:280px">
+          <h1>Solo indie games with a neon soul.</h1>
+          <p>Karabyte Studio builds compact, replayable experiences with clean UX and bold, cyber‑tinged aesthetics. Explore our latest project, <strong>Snakelike</strong>, and follow along as we ship more titles.</p>
+          <div class="cta">
+            <a class="btn primary" href="#/games">🎮 Explore Games</a>
+            <a class="btn" href="#/privacy">🔒 Privacy Policy</a>
+          </div>
+        </div>
+        <div style="flex:1 1 420px;min-width:260px">
+          <div class="game-thumb" aria-hidden="true">Hero banner — drop your artwork here</div>
+        </div>
       </div>
-    </section>
+    </div>
+    <div class="container">
+      <div class="grid">
+        <div class="card">
+          <span class="pill">News</span>
+          <h3>“Snakelike” demo</h3>
+          <p class="muted">A fast, top‑down survival roguelite with hunger and meta upgrades. Build bigger, move smarter, survive longer.</p>
+          <div class="kv">
+            <div>Platform: Android (coming), Windows</div>
+            <div>Genre: Roguelite • Arcade</div>
+            <div>Engine: Unity</div>
+          </div>
+          <div class="cta" style="margin-top:12px">
+            <a class="btn primary" href="#/games">View Game</a>
+            <a class="btn" href="#/contact">Contact</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="pill">Stack</span>
+          <h3>Tech & Art Style</h3>
+          <p>2D with punchy VFX, minimal UI, neon accents on noir backdrops. Built with Unity 6.1.
+          </p>
+          <div class="kv"><div>URP</div><div>TextMeshPro</div><div>Addressables</div><div>Mobile‑first</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section id="games" class="games-section">
+  <!-- Games -->
+  <section id="games">
+    <div class="container">
       <h2>Games</h2>
-      <div class="games-grid">
-        <a class="game-card" href="games/space-adventure.html">
-          <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=60" alt="Space Adventure" />
-          <h3>Space Adventure</h3>
-          <p>Embark on a cosmic journey across uncharted galaxies.</p>
-        </a>
-        <a class="game-card" href="games/quest-for-gold.html">
-          <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367b?auto=format&fit=crop&w=800&q=60" alt="Quest for Gold" />
-          <h3>Quest for Gold</h3>
-          <p>Seek legendary treasures in mysterious lands.</p>
-        </a>
+      <p class="muted">Published & in‑development titles from Karabyte Studio.</p>
+
+      <div class="grid" style="margin-top:12px">
+        <!-- Snakelike Card -->
+        <article class="card">
+          <div class="game-thumb">Snakelike cover — add screenshot</div>
+          <h3>Snakelike</h3>
+          <p>A roguelite spin on classic snake: dash through rooms, manage hunger instead of HP, and grow by devouring. Earn meta upgrades between runs to push deeper.</p>
+          <ul>
+            <li>Core loop: 20‑second rooms • choices • risk/reward</li>
+            <li>Meta: permanent upgrades, skill‑tree progress</li>
+            <li>Planned: boss rooms, elite encounters, item drops</li>
+          </ul>
+          <div class="kv"><div>Unity</div><div>Mobile + PC</div><div>Single‑player</div></div>
+          <div class="cta" style="margin-top:12px">
+            <a class="btn primary" href="#" aria-label="Play on itch.io (placeholder)">▶ Play (itch.io)</a>
+            <a class="btn" href="#" aria-label="Wishlist on Google Play (placeholder)">★ Google Play (soon)</a>
+            <a class="btn" href="#/privacy">Privacy Policy</a>
+          </div>
+        </article>
+
+        <!-- Template card for future games (comment out or duplicate) -->
+        <!--
+        <article class="card">
+          <div class="game-thumb">Cover</div>
+          <h3>Game Title</h3>
+          <p>Short, one‑sentence pitch.</p>
+          <div class="kv"><div>Engine</div><div>Platform</div></div>
+          <div class="cta" style="margin-top:12px">
+            <a class="btn primary" href="#">Play</a>
+            <a class="btn" href="#/privacy">Privacy</a>
+          </div>
+        </article>
+        -->
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="about" class="content-section">
+  <!-- Privacy Policy (intact) -->
+  <section id="privacy">
+    <div class="container">
+      <h2>Privacy Policy</h2>
+      <p class="badge">Last updated: <time datetime="2025-08-09">August 9, 2025</time></p>
+      <div class="card">
+        <p>Karabyte Studio ("Karabyte", "we", "our", or "us") develops and publishes mobile games on Google Play. This Privacy Policy explains how we collect, use, disclose, and safeguard information when you play our games. By using our games, you agree to this Policy.</p>
+      </div>
+      <div class="toc" style="margin:14px 0 22px">
+        <strong>Jump to:</strong>
+        <a href="#privacy-info">Information We Collect</a>
+        <a href="#privacy-use">How We Use Info</a>
+        <a href="#privacy-ads">Ads & Analytics</a>
+        <a href="#privacy-share">Sharing</a>
+        <a href="#privacy-kids">Children</a>
+        <a href="#privacy-rights">Your Rights</a>
+        <a href="#privacy-changes">Changes</a>
+        <a href="#privacy-contact">Contact</a>
+      </div>
+
+      <h3 id="privacy-info">1. Information We Collect</h3>
+      <h4>1.a Information You Provide</h4>
+      <ul><li>Contact details (e.g., name, email) when you reach out for support or feedback.</li></ul>
+      <h4>1.b Information Collected Automatically</h4>
+      <ul>
+        <li>Device data (model, OS version, language, time zone, region, identifiers where available).</li>
+        <li>Gameplay data (progress, achievements, leaderboards, session length, purchases).</li>
+        <li>Diagnostic data (crash logs, performance metrics).</li>
+      </ul>
+      <h4>1.c Information from Third‑Party Services</h4>
+      <p>We integrate third‑party SDKs operating under their own policies:</p>
+      <div class="kv"><div>Google Play Services</div><div>Google Play Games Services</div><div>AdMob / Google Ads</div><div>Unity Ads (optional)</div><div>Firebase Analytics / Crashlytics</div><div>Google Play Billing</div></div>
+
+      <h3 id="privacy-use">2. How We Use Information</h3>
+      <ul>
+        <li>Operate and improve our games and services.</li>
+        <li>Enable features such as achievements, leaderboards, cloud saves, and purchases.</li>
+        <li>Measure performance and fix bugs.</li>
+        <li>Provide support and respond to requests.</li>
+        <li>Serve advertising and prevent fraud.</li>
+        <li>Comply with legal obligations.</li>
+      </ul>
+
+      <h3 id="privacy-ads">3. Ads, Personalization & Analytics</h3>
+      <p>Some games show ads. Depending on your region and settings, ads may be personalized. Control this via Android advertising settings, your Google account ad choices, or in‑game consent prompts where required.</p>
+
+      <h3 id="privacy-share">4. Sharing of Information</h3>
+      <ul>
+        <li><strong>We do not sell personal data.</strong></li>
+        <li>We share data with vendors/SDK providers who process it on our behalf.</li>
+        <li>We may disclose information to comply with law and protect rights/safety.</li>
+      </ul>
+
+      <h3 id="privacy-kids">5. Children’s Privacy</h3>
+      <p>Our games are for general audiences. We do not knowingly collect personal information from children under 13 (or the age defined by local law) without verifiable parental consent.</p>
+
+      <h3 id="privacy-rights">6. Your Rights & Controls</h3>
+      <ul>
+        <li>Opt‑out of personalized ads in device/Google settings or in‑game consent tools.</li>
+        <li>Request access, correction, deletion, or portability by emailing <a href="mailto:karabyte.studio@gmail.com">karabyte.studio@gmail.com</a>.</li>
+      </ul>
+
+      <h3 id="privacy-security">7. Data Security & Retention</h3>
+      <p>We use reasonable measures to protect data and retain it only as long as necessary for the described purposes or as required by law.</p>
+
+      <h3 id="privacy-3p">8. Third‑Party Services</h3>
+      <ul>
+        <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google (AdMob, Google Ads, Firebase, Google Play Services)</a></li>
+        <li><a href="https://unity.com/legal/privacy-policy" target="_blank" rel="noopener">Unity (Unity Ads/Analytics)</a></li>
+      </ul>
+
+      <h3 id="privacy-changes">9. Changes to This Policy</h3>
+      <p>We may update this Policy. The “Last updated” date will reflect the latest version.</p>
+
+      <h3 id="privacy-contact">10. Contact Us</h3>
+      <ul>
+        <li>Email: <a href="mailto:karabyte.studio@gmail.com">karabyte.studio@gmail.com</a></li>
+        <li>Publisher: Karabyte Studio</li>
+      </ul>
+
+      <div class="card" role="note" aria-label="Compliance helpers" style="margin-top:16px">
+        <h4>Google Play Tips</h4>
+        <ul>
+          <li>Host this page at a public URL (e.g., <code>https://your-domain/privacy</code>) and add it in Play Console.</li>
+          <li>Keep your Data safety form in sync with your actual SDKs.</li>
+          <li>If you serve children, use an age gate and non‑personalized ads.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
       <h2>About</h2>
-      <p>Karabyte Studio is a solo indie developer crafting immersive experiences with a futuristic flair.</p>
-    </section>
+      <div class="grid">
+        <div class="card">
+          <p>Karabyte Studio is a one‑person game studio crafting tight, replayable 2D experiences with clean UX and neon‑noir vibes. Based in Türkiye.</p>
+          <div class="kv"><div>Solo Dev</div><div>Unity 2D</div><div>Mobile + PC</div></div>
+        </div>
+        <div class="card">
+          <h3>Press & Assets</h3>
+          <p>Need screenshots, logos, or a one‑pager? Email me and I'll send a mini press kit.</p>
+          <a class="btn" href="mailto:karabyte.studio@gmail.com">Request press kit</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section id="contact" class="content-section">
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
       <h2>Contact</h2>
-      <p>Reach out via <a class="btn" href="mailto:karabyte@example.com">karabyte@example.com</a></p>
-    </section>
+      <p class="muted">For support, business inquiries, or collaborations:</p>
+      <div class="card">
+        <ul>
+          <li>Email: <a href="mailto:karabyte.studio@gmail.com">karabyte.studio@gmail.com</a></li>
+          <li>YouTube: <a href="#" aria-label="YouTube placeholder">@karabyte</a></li>
+          <li>Twitter/X: <a href="#" aria-label="Twitter placeholder">@karabyte</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-    <footer>
-      <p>&copy; 2024 Karabyte Studio</p>
-    </footer>
-  </body>
+  <footer class="container">© <span id="year"></span> Karabyte Studio — All rights reserved.</footer>
+
+  <script>
+    // simple hash router to switch sections
+    const routes = ["home","games","privacy","about","contact"]; 
+    function render(){
+      const h = location.hash.replace('#/','') || 'home';
+      routes.forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(id===h){el.classList.add('active');}
+        else{el.classList.remove('active');}
+      });
+      // set active state on desktop nav links
+      document.querySelectorAll('nav a').forEach(a=>{
+        a.removeAttribute('aria-current');
+        if(a.getAttribute('href') === `#/${h}`){ a.setAttribute('aria-current','page'); }
+      });
+      document.title = `Karabyte Studio — ${h.charAt(0).toUpperCase()+h.slice(1)}`;
+    }
+
+    window.addEventListener('hashchange', render);
+
+    // Mobile menu logic with focus trap
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    const menuClose = document.getElementById('menuClose');
+    let lastFocus = null;
+
+    function getFocusable(container){
+      return [...container.querySelectorAll('a,button,[tabindex]:not([tabindex="-1"])')]
+        .filter(el=>!el.hasAttribute('disabled') && el.offsetParent !== null);
+    }
+
+    function openMenu(){
+      lastFocus = document.activeElement;
+      mobileNav.hidden = false; mobileBackdrop.hidden = false;
+      requestAnimationFrame(()=>{ mobileNav.classList.add('open'); mobileBackdrop.classList.add('open'); });
+      menuBtn.setAttribute('aria-expanded','true');
+      const f = getFocusable(mobileNav); (f[0]||menuClose).focus();
+      document.addEventListener('keydown', trap, true);
+    }
+    function closeMenu(){
+      mobileNav.classList.remove('open'); mobileBackdrop.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded','false');
+      setTimeout(()=>{ mobileNav.hidden = true; mobileBackdrop.hidden = true; }, 200);
+      document.removeEventListener('keydown', trap, true);
+      if(lastFocus) lastFocus.focus();
+    }
+    function trap(e){
+      if(e.key === 'Escape'){ closeMenu(); return; }
+      if(e.key !== 'Tab') return;
+      const f = getFocusable(mobileNav); if(!f.length) return;
+      const first = f[0], last = f[f.length-1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+
+    menuBtn?.addEventListener('click', openMenu);
+    menuClose?.addEventListener('click', closeMenu);
+    mobileBackdrop?.addEventListener('click', closeMenu);
+    mobileNav?.querySelectorAll('[data-nav]').forEach(a=> a.addEventListener('click', closeMenu));
+
+    window.addEventListener('DOMContentLoaded', ()=>{
+      document.getElementById('year').textContent = new Date().getFullYear();
+      if(!location.hash) location.hash = '#/home';
+      render();
+    });
+  </script>
+</body>
 </html>
